@@ -19,9 +19,9 @@ PS : One may feel free to spend a day or two making it compatible with any other
   
 │   └── bl.py
   
-├── prog.py      # the main python file for predicting audio samples present in the folder data
+├── prog.py      # the main python file for predicting audio samples present in the folder audio
   
-├── record.py      # the python script used to record user voice and store it in the data directory
+├── record.py      # the python script used to record user voice and store it in the audio directory
   
 └── model-k           # folder for model, checkpoints and logs related to the classifier
 
