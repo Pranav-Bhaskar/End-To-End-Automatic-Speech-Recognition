@@ -23,7 +23,7 @@ PS : One may feel free to spend a day or two making it compatible with any other
   
 ├── record.py      # the python script used to record user voice and store it in the audio directory
   
-└── model-k           # folder for model, checkpoints and logs related to the classifier
+└── MaDaR4           # folder for model, checkpoints and logs related to the classifier
 
 # Requirements
 python3.x
