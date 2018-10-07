@@ -14,7 +14,7 @@ from tensorflow.contrib import signal
 from tensorflow.contrib.learn.python.learn.learn_io.generator_io import generator_input_fn
 from tqdm import tqdm
 
-POSSIBLE_LABELS = 'yes no up down left right on off stop go silence unknown'.split()	#list containing all the possible commands
+POSSIBLE_LABELS = 'yes no up down left right on off stop go zero one two three four five six seven eight nine bed bird cat dog happy house marvin sheila tree wow silence unknown'.split()	#list containing all the possible commands
 id2name = {i: name for i, name in enumerate(POSSIBLE_LABELS)}	#dictionary used to represent each command with a unique number
 name2id = {name: i for i, name in id2name.items()}	#dictionary acting as reverse of the previous one
 

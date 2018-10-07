@@ -741,6 +741,12 @@ node {
     }
   }
   attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+  attr {
     key: "_output_shapes"
     value {
       list {
@@ -1609,17 +1615,16 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 1
           }
         }
         shape {
           dim {
-            size: -1
+            size: 1
           }
         }
         shape {
           dim {
-            size: -1
           }
         }
       }
@@ -1694,14 +1699,7 @@ node {
 }
 node {
   name: "stft/frame/Size"
-  op: "Size"
-  input: "stft/frame/split"
-  attr {
-    key: "T"
-    value {
-      type: DT_INT32
-    }
-  }
+  op: "Const"
   attr {
     key: "_output_shapes"
     value {
@@ -1712,22 +1710,26 @@ node {
     }
   }
   attr {
-    key: "out_type"
+    key: "dtype"
     value {
       type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 1
+      }
     }
   }
 }
 node {
   name: "stft/frame/Size_1"
-  op: "Size"
-  input: "stft/frame/split:2"
-  attr {
-    key: "T"
-    value {
-      type: DT_INT32
-    }
-  }
+  op: "Const"
   attr {
     key: "_output_shapes"
     value {
@@ -1738,9 +1740,20 @@ node {
     }
   }
   attr {
-    key: "out_type"
+    key: "dtype"
     value {
       type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
     }
   }
 }
@@ -2098,7 +2111,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 2
           }
         }
       }
@@ -2202,7 +2215,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 3
           }
         }
       }
@@ -2334,6 +2347,12 @@ node {
       }
     }
   }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
 }
 node {
   name: "stft/frame/StridedSlice"
@@ -2360,10 +2379,10 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 64
           }
           dim {
-            size: -1
+            size: 16000
           }
         }
       }
@@ -2422,7 +2441,15 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 200
+          }
+          dim {
+            size: 80
+          }
         }
       }
     }
@@ -2506,7 +2533,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 98
           }
         }
       }
@@ -2530,7 +2557,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 98
           }
         }
       }
@@ -2626,7 +2653,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 98
           }
           dim {
             size: 1
@@ -2714,7 +2741,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 5
           }
         }
       }
@@ -2813,7 +2840,7 @@ node {
             size: 1
           }
           dim {
-            size: -1
+            size: 5
           }
         }
       }
@@ -2837,10 +2864,10 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 98
           }
           dim {
-            size: -1
+            size: 5
           }
         }
       }
@@ -2876,7 +2903,18 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 98
+          }
+          dim {
+            size: 5
+          }
+          dim {
+            size: 80
+          }
         }
       }
     }
@@ -2979,7 +3017,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 3
           }
         }
       }
@@ -3066,6 +3104,12 @@ node {
     key: "SrcT"
     value {
       type: DT_BOOL
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
     }
   }
   attr {
@@ -3290,6 +3334,12 @@ node {
     }
   }
   attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+  attr {
     key: "_output_shapes"
     value {
       list {
@@ -3398,6 +3448,12 @@ node {
     key: "SrcT"
     value {
       type: DT_INT32
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
     }
   }
   attr {
@@ -4707,15 +4763,54 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: 0.0010000000474974513
+        float_val: 0.9990000128746033
       }
     }
   }
 }
 node {
-  name: "extractor/BatchNorm/AssignMovingAvg/read"
-  op: "Identity"
-  input: "extractor/BatchNorm/moving_mean"
+  name: "extractor/BatchNorm/AssignMovingAvg/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/BatchNorm/AssignMovingAvg/sub"
+  op: "Sub"
+  input: "extractor/BatchNorm/AssignMovingAvg/sub/x"
+  input: "extractor/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -4735,18 +4830,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 2
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/BatchNorm/AssignMovingAvg/Sub"
+  name: "extractor/BatchNorm/AssignMovingAvg/sub_1"
   op: "Sub"
-  input: "extractor/BatchNorm/AssignMovingAvg/read"
+  input: "extractor/BatchNorm/moving_mean/read"
   input: "extractor/BatchNorm/FusedBatchNorm:1"
   attr {
     key: "T"
@@ -4776,10 +4868,10 @@ node {
   }
 }
 node {
-  name: "extractor/BatchNorm/AssignMovingAvg/Mul"
+  name: "extractor/BatchNorm/AssignMovingAvg/mul"
   op: "Mul"
-  input: "extractor/BatchNorm/AssignMovingAvg/Sub"
-  input: "extractor/BatchNorm/Const_3"
+  input: "extractor/BatchNorm/AssignMovingAvg/sub_1"
+  input: "extractor/BatchNorm/AssignMovingAvg/sub"
   attr {
     key: "T"
     value {
@@ -4811,7 +4903,7 @@ node {
   name: "extractor/BatchNorm/AssignMovingAvg"
   op: "AssignSub"
   input: "extractor/BatchNorm/moving_mean"
-  input: "extractor/BatchNorm/AssignMovingAvg/Mul"
+  input: "extractor/BatchNorm/AssignMovingAvg/mul"
   attr {
     key: "T"
     value {
@@ -4846,9 +4938,48 @@ node {
   }
 }
 node {
-  name: "extractor/BatchNorm/AssignMovingAvg_1/read"
-  op: "Identity"
-  input: "extractor/BatchNorm/moving_variance"
+  name: "extractor/BatchNorm/AssignMovingAvg_1/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/BatchNorm/AssignMovingAvg_1/sub"
+  op: "Sub"
+  input: "extractor/BatchNorm/AssignMovingAvg_1/sub/x"
+  input: "extractor/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -4868,18 +4999,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 2
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/BatchNorm/AssignMovingAvg_1/Sub"
+  name: "extractor/BatchNorm/AssignMovingAvg_1/sub_1"
   op: "Sub"
-  input: "extractor/BatchNorm/AssignMovingAvg_1/read"
+  input: "extractor/BatchNorm/moving_variance/read"
   input: "extractor/BatchNorm/FusedBatchNorm:2"
   attr {
     key: "T"
@@ -4909,10 +5037,10 @@ node {
   }
 }
 node {
-  name: "extractor/BatchNorm/AssignMovingAvg_1/Mul"
+  name: "extractor/BatchNorm/AssignMovingAvg_1/mul"
   op: "Mul"
-  input: "extractor/BatchNorm/AssignMovingAvg_1/Sub"
-  input: "extractor/BatchNorm/Const_3"
+  input: "extractor/BatchNorm/AssignMovingAvg_1/sub_1"
+  input: "extractor/BatchNorm/AssignMovingAvg_1/sub"
   attr {
     key: "T"
     value {
@@ -4944,7 +5072,7 @@ node {
   name: "extractor/BatchNorm/AssignMovingAvg_1"
   op: "AssignSub"
   input: "extractor/BatchNorm/moving_variance"
-  input: "extractor/BatchNorm/AssignMovingAvg_1/Mul"
+  input: "extractor/BatchNorm/AssignMovingAvg_1/mul"
   attr {
     key: "T"
     value {
@@ -6253,15 +6381,54 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: 0.0010000000474974513
+        float_val: 0.9990000128746033
       }
     }
   }
 }
 node {
-  name: "extractor/Conv/BatchNorm/AssignMovingAvg/read"
-  op: "Identity"
-  input: "extractor/Conv/BatchNorm/moving_mean"
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg/sub"
+  op: "Sub"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg/sub/x"
+  input: "extractor/Conv/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -6281,18 +6448,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 16
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv/BatchNorm/AssignMovingAvg/Sub"
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg/sub_1"
   op: "Sub"
-  input: "extractor/Conv/BatchNorm/AssignMovingAvg/read"
+  input: "extractor/Conv/BatchNorm/moving_mean/read"
   input: "extractor/Conv/BatchNorm/FusedBatchNorm:1"
   attr {
     key: "T"
@@ -6322,10 +6486,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv/BatchNorm/AssignMovingAvg/Mul"
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg/mul"
   op: "Mul"
-  input: "extractor/Conv/BatchNorm/AssignMovingAvg/Sub"
-  input: "extractor/Conv/BatchNorm/Const_3"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg/sub_1"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg/sub"
   attr {
     key: "T"
     value {
@@ -6357,7 +6521,7 @@ node {
   name: "extractor/Conv/BatchNorm/AssignMovingAvg"
   op: "AssignSub"
   input: "extractor/Conv/BatchNorm/moving_mean"
-  input: "extractor/Conv/BatchNorm/AssignMovingAvg/Mul"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg/mul"
   attr {
     key: "T"
     value {
@@ -6392,9 +6556,48 @@ node {
   }
 }
 node {
-  name: "extractor/Conv/BatchNorm/AssignMovingAvg_1/read"
-  op: "Identity"
-  input: "extractor/Conv/BatchNorm/moving_variance"
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg_1/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg_1/sub"
+  op: "Sub"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg_1/sub/x"
+  input: "extractor/Conv/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -6414,18 +6617,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 16
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv/BatchNorm/AssignMovingAvg_1/Sub"
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg_1/sub_1"
   op: "Sub"
-  input: "extractor/Conv/BatchNorm/AssignMovingAvg_1/read"
+  input: "extractor/Conv/BatchNorm/moving_variance/read"
   input: "extractor/Conv/BatchNorm/FusedBatchNorm:2"
   attr {
     key: "T"
@@ -6455,10 +6655,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv/BatchNorm/AssignMovingAvg_1/Mul"
+  name: "extractor/Conv/BatchNorm/AssignMovingAvg_1/mul"
   op: "Mul"
-  input: "extractor/Conv/BatchNorm/AssignMovingAvg_1/Sub"
-  input: "extractor/Conv/BatchNorm/Const_3"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg_1/sub_1"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg_1/sub"
   attr {
     key: "T"
     value {
@@ -6490,7 +6690,7 @@ node {
   name: "extractor/Conv/BatchNorm/AssignMovingAvg_1"
   op: "AssignSub"
   input: "extractor/Conv/BatchNorm/moving_variance"
-  input: "extractor/Conv/BatchNorm/AssignMovingAvg_1/Mul"
+  input: "extractor/Conv/BatchNorm/AssignMovingAvg_1/mul"
   attr {
     key: "T"
     value {
@@ -7897,15 +8097,54 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: 0.0010000000474974513
+        float_val: 0.9990000128746033
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg/read"
-  op: "Identity"
-  input: "extractor/Conv_1/BatchNorm/moving_mean"
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_1/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg/sub"
+  op: "Sub"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg/sub/x"
+  input: "extractor/Conv_1/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -7925,18 +8164,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 32
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg/Sub"
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg/sub_1"
   op: "Sub"
-  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg/read"
+  input: "extractor/Conv_1/BatchNorm/moving_mean/read"
   input: "extractor/Conv_1/BatchNorm/FusedBatchNorm:1"
   attr {
     key: "T"
@@ -7966,10 +8202,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg/Mul"
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg/mul"
   op: "Mul"
-  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg/Sub"
-  input: "extractor/Conv_1/BatchNorm/Const_3"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg/sub_1"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg/sub"
   attr {
     key: "T"
     value {
@@ -8001,7 +8237,7 @@ node {
   name: "extractor/Conv_1/BatchNorm/AssignMovingAvg"
   op: "AssignSub"
   input: "extractor/Conv_1/BatchNorm/moving_mean"
-  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg/Mul"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg/mul"
   attr {
     key: "T"
     value {
@@ -8036,9 +8272,48 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/read"
-  op: "Identity"
-  input: "extractor/Conv_1/BatchNorm/moving_variance"
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_1/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/sub"
+  op: "Sub"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/sub/x"
+  input: "extractor/Conv_1/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -8058,18 +8333,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 32
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/Sub"
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/sub_1"
   op: "Sub"
-  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/read"
+  input: "extractor/Conv_1/BatchNorm/moving_variance/read"
   input: "extractor/Conv_1/BatchNorm/FusedBatchNorm:2"
   attr {
     key: "T"
@@ -8099,10 +8371,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/Mul"
+  name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/mul"
   op: "Mul"
-  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/Sub"
-  input: "extractor/Conv_1/BatchNorm/Const_3"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/sub_1"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/sub"
   attr {
     key: "T"
     value {
@@ -8134,7 +8406,7 @@ node {
   name: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1"
   op: "AssignSub"
   input: "extractor/Conv_1/BatchNorm/moving_variance"
-  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/Mul"
+  input: "extractor/Conv_1/BatchNorm/AssignMovingAvg_1/mul"
   attr {
     key: "T"
     value {
@@ -9541,15 +9813,54 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: 0.0010000000474974513
+        float_val: 0.9990000128746033
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg/read"
-  op: "Identity"
-  input: "extractor/Conv_2/BatchNorm/moving_mean"
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_2/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg/sub"
+  op: "Sub"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg/sub/x"
+  input: "extractor/Conv_2/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -9569,18 +9880,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 64
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg/Sub"
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg/sub_1"
   op: "Sub"
-  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg/read"
+  input: "extractor/Conv_2/BatchNorm/moving_mean/read"
   input: "extractor/Conv_2/BatchNorm/FusedBatchNorm:1"
   attr {
     key: "T"
@@ -9610,10 +9918,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg/Mul"
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg/mul"
   op: "Mul"
-  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg/Sub"
-  input: "extractor/Conv_2/BatchNorm/Const_3"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg/sub_1"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg/sub"
   attr {
     key: "T"
     value {
@@ -9645,7 +9953,7 @@ node {
   name: "extractor/Conv_2/BatchNorm/AssignMovingAvg"
   op: "AssignSub"
   input: "extractor/Conv_2/BatchNorm/moving_mean"
-  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg/Mul"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg/mul"
   attr {
     key: "T"
     value {
@@ -9680,9 +9988,48 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/read"
-  op: "Identity"
-  input: "extractor/Conv_2/BatchNorm/moving_variance"
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_2/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/sub"
+  op: "Sub"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/sub/x"
+  input: "extractor/Conv_2/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -9702,18 +10049,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 64
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/Sub"
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/sub_1"
   op: "Sub"
-  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/read"
+  input: "extractor/Conv_2/BatchNorm/moving_variance/read"
   input: "extractor/Conv_2/BatchNorm/FusedBatchNorm:2"
   attr {
     key: "T"
@@ -9743,10 +10087,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/Mul"
+  name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/mul"
   op: "Mul"
-  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/Sub"
-  input: "extractor/Conv_2/BatchNorm/Const_3"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/sub_1"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/sub"
   attr {
     key: "T"
     value {
@@ -9778,7 +10122,7 @@ node {
   name: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1"
   op: "AssignSub"
   input: "extractor/Conv_2/BatchNorm/moving_variance"
-  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/Mul"
+  input: "extractor/Conv_2/BatchNorm/AssignMovingAvg_1/mul"
   attr {
     key: "T"
     value {
@@ -11185,15 +11529,54 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: 0.0010000000474974513
+        float_val: 0.9990000128746033
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg/read"
-  op: "Identity"
-  input: "extractor/Conv_3/BatchNorm/moving_mean"
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_3/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg/sub"
+  op: "Sub"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg/sub/x"
+  input: "extractor/Conv_3/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -11213,18 +11596,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 128
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg/Sub"
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg/sub_1"
   op: "Sub"
-  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg/read"
+  input: "extractor/Conv_3/BatchNorm/moving_mean/read"
   input: "extractor/Conv_3/BatchNorm/FusedBatchNorm:1"
   attr {
     key: "T"
@@ -11254,10 +11634,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg/Mul"
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg/mul"
   op: "Mul"
-  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg/Sub"
-  input: "extractor/Conv_3/BatchNorm/Const_3"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg/sub_1"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg/sub"
   attr {
     key: "T"
     value {
@@ -11289,7 +11669,7 @@ node {
   name: "extractor/Conv_3/BatchNorm/AssignMovingAvg"
   op: "AssignSub"
   input: "extractor/Conv_3/BatchNorm/moving_mean"
-  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg/Mul"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg/mul"
   attr {
     key: "T"
     value {
@@ -11324,9 +11704,48 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/read"
-  op: "Identity"
-  input: "extractor/Conv_3/BatchNorm/moving_variance"
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/sub/x"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_3/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/sub"
+  op: "Sub"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/sub/x"
+  input: "extractor/Conv_3/BatchNorm/Const_3"
   attr {
     key: "T"
     value {
@@ -11346,18 +11765,15 @@ node {
     value {
       list {
         shape {
-          dim {
-            size: 128
-          }
         }
       }
     }
   }
 }
 node {
-  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/Sub"
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/sub_1"
   op: "Sub"
-  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/read"
+  input: "extractor/Conv_3/BatchNorm/moving_variance/read"
   input: "extractor/Conv_3/BatchNorm/FusedBatchNorm:2"
   attr {
     key: "T"
@@ -11387,10 +11803,10 @@ node {
   }
 }
 node {
-  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/Mul"
+  name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/mul"
   op: "Mul"
-  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/Sub"
-  input: "extractor/Conv_3/BatchNorm/Const_3"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/sub_1"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/sub"
   attr {
     key: "T"
     value {
@@ -11422,7 +11838,7 @@ node {
   name: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1"
   op: "AssignSub"
   input: "extractor/Conv_3/BatchNorm/moving_variance"
-  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/Mul"
+  input: "extractor/Conv_3/BatchNorm/AssignMovingAvg_1/mul"
   attr {
     key: "T"
     value {
@@ -13048,7 +13464,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "\001\000\000\000\001\000\000\000\200\000\000\000\014\000\000\000"
+        tensor_content: "\001\000\000\000\001\000\000\000\200\000\000\000 \000\000\000"
       }
     }
   }
@@ -13086,7 +13502,7 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: -0.20701967179775238
+        float_val: -0.19364917278289795
       }
     }
   }
@@ -13124,7 +13540,7 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: 0.20701967179775238
+        float_val: 0.19364917278289795
       }
     }
   }
@@ -13162,7 +13578,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13250,7 +13666,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13291,7 +13707,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13324,7 +13740,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13356,7 +13772,7 @@ node {
           size: 128
         }
         dim {
-          size: 12
+          size: 32
         }
       }
     }
@@ -13402,7 +13818,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13454,7 +13870,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13478,7 +13894,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13497,7 +13913,7 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
           dim {
-            size: 12
+            size: 32
           }
         }
         float_val: 0.0
@@ -13522,7 +13938,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13545,7 +13961,7 @@ node {
     value {
       shape {
         dim {
-          size: 12
+          size: 32
         }
       }
     }
@@ -13582,7 +13998,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13625,7 +14041,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13694,7 +14110,7 @@ node {
             size: 1
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13767,7 +14183,7 @@ node {
             size: 1
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13799,7 +14215,7 @@ node {
             size: 64
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13882,7 +14298,7 @@ node {
             size: 64
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -13962,16 +14378,16 @@ node {
   name: "OptimizeLoss/control_dependency"
   op: "Identity"
   input: "Mean"
+  input: "^extractor/BatchNorm/AssignMovingAvg"
+  input: "^extractor/BatchNorm/AssignMovingAvg_1"
+  input: "^extractor/Conv/BatchNorm/AssignMovingAvg"
+  input: "^extractor/Conv/BatchNorm/AssignMovingAvg_1"
+  input: "^extractor/Conv_1/BatchNorm/AssignMovingAvg"
+  input: "^extractor/Conv_1/BatchNorm/AssignMovingAvg_1"
   input: "^extractor/Conv_2/BatchNorm/AssignMovingAvg"
   input: "^extractor/Conv_2/BatchNorm/AssignMovingAvg_1"
   input: "^extractor/Conv_3/BatchNorm/AssignMovingAvg"
-  input: "^extractor/BatchNorm/AssignMovingAvg"
-  input: "^extractor/Conv_1/BatchNorm/AssignMovingAvg"
-  input: "^extractor/BatchNorm/AssignMovingAvg_1"
-  input: "^extractor/Conv_1/BatchNorm/AssignMovingAvg_1"
   input: "^extractor/Conv_3/BatchNorm/AssignMovingAvg_1"
-  input: "^extractor/Conv/BatchNorm/AssignMovingAvg_1"
-  input: "^extractor/Conv/BatchNorm/AssignMovingAvg"
   attr {
     key: "T"
     value {
@@ -14150,33 +14566,7 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/ExponentialDecay/Cast"
-  op: "Cast"
-  input: "global_step/read"
-  attr {
-    key: "DstT"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "SrcT"
-    value {
-      type: DT_INT64
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-}
-node {
-  name: "OptimizeLoss/ExponentialDecay/Cast_1/x"
+  name: "OptimizeLoss/ExponentialDecay/Cast/x"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -14206,9 +14596,9 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/ExponentialDecay/Cast_1"
+  name: "OptimizeLoss/ExponentialDecay/Cast"
   op: "Cast"
-  input: "OptimizeLoss/ExponentialDecay/Cast_1/x"
+  input: "OptimizeLoss/ExponentialDecay/Cast/x"
   attr {
     key: "DstT"
     value {
@@ -14222,6 +14612,12 @@ node {
     }
   }
   attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+  attr {
     key: "_output_shapes"
     value {
       list {
@@ -14232,7 +14628,7 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/ExponentialDecay/Cast_2/x"
+  name: "OptimizeLoss/ExponentialDecay/Cast_1/x"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -14262,10 +14658,42 @@ node {
   }
 }
 node {
+  name: "OptimizeLoss/ExponentialDecay/Cast_2"
+  op: "Cast"
+  input: "global_step/read"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_INT64
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
   name: "OptimizeLoss/ExponentialDecay/truediv"
   op: "RealDiv"
+  input: "OptimizeLoss/ExponentialDecay/Cast_2"
   input: "OptimizeLoss/ExponentialDecay/Cast"
-  input: "OptimizeLoss/ExponentialDecay/Cast_1"
   attr {
     key: "T"
     value {
@@ -14285,7 +14713,7 @@ node {
 node {
   name: "OptimizeLoss/ExponentialDecay/Pow"
   op: "Pow"
-  input: "OptimizeLoss/ExponentialDecay/Cast_2/x"
+  input: "OptimizeLoss/ExponentialDecay/Cast_1/x"
   input: "OptimizeLoss/ExponentialDecay/truediv"
   attr {
     key: "T"
@@ -14458,6 +14886,12 @@ node {
       }
     }
   }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
 }
 node {
   name: "OptimizeLoss/gradients/Mean_grad/Reshape/shape"
@@ -14526,7 +14960,7 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/Mean_grad/Tile/multiples"
+  name: "OptimizeLoss/gradients/Mean_grad/Const"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -14565,7 +14999,7 @@ node {
   name: "OptimizeLoss/gradients/Mean_grad/Tile"
   op: "Tile"
   input: "OptimizeLoss/gradients/Mean_grad/Reshape"
-  input: "OptimizeLoss/gradients/Mean_grad/Tile/multiples"
+  input: "OptimizeLoss/gradients/Mean_grad/Const"
   attr {
     key: "T"
     value {
@@ -14592,7 +15026,7 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/Mean_grad/Const"
+  name: "OptimizeLoss/gradients/Mean_grad/Const_1"
   op: "Const"
   attr {
     key: "_output_shapes"
@@ -14625,7 +15059,7 @@ node {
   name: "OptimizeLoss/gradients/Mean_grad/truediv"
   op: "RealDiv"
   input: "OptimizeLoss/gradients/Mean_grad/Tile"
-  input: "OptimizeLoss/gradients/Mean_grad/Const"
+  input: "OptimizeLoss/gradients/Mean_grad/Const_1"
   attr {
     key: "T"
     value {
@@ -14664,7 +15098,7 @@ node {
             size: 64
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -14690,7 +15124,7 @@ node {
             size: 64
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -14786,7 +15220,7 @@ node {
             size: 64
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -14824,7 +15258,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "@\000\000\000\001\000\000\000\001\000\000\000\014\000\000\000"
+        tensor_content: "@\000\000\000\001\000\000\000\001\000\000\000 \000\000\000"
       }
     }
   }
@@ -14861,7 +15295,7 @@ node {
             size: 1
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -14884,7 +15318,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -14900,8 +15334,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_5/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Squeeze_grad/Reshape"
   input: "^OptimizeLoss/gradients/extractor/Conv_5/BiasAdd_grad/BiasAddGrad"
+  input: "^OptimizeLoss/gradients/extractor/Squeeze_grad/Reshape"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_5/BiasAdd_grad/tuple/control_dependency"
@@ -14937,7 +15371,7 @@ node {
             size: 1
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -14969,7 +15403,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -15018,81 +15452,9 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Const"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "@\000\000\000\001\000\000\000\001\000\000\000\200\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "\001\000\000\000\001\000\000\000\200\000\000\000\014\000\000\000"
-      }
-    }
-  }
-}
-node {
   name: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Const"
+  input: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/ShapeN"
   input: "extractor/Conv_5/weights/read"
   input: "OptimizeLoss/gradients/extractor/Conv_5/BiasAdd_grad/tuple/control_dependency"
   attr {
@@ -15167,7 +15529,7 @@ node {
   name: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "extractor/dropout/mul"
-  input: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Const_1"
+  input: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/ShapeN:1"
   input: "OptimizeLoss/gradients/extractor/Conv_5/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -15190,7 +15552,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -15240,8 +15602,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Conv2DBackpropInput"
   input: "^OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_5/Conv2D_grad/tuple/control_dependency"
@@ -15318,7 +15680,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -15632,7 +15994,12 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -15836,7 +16203,6 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
         }
       }
     }
@@ -16016,8 +16382,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_4/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Conv_4/Elu_grad/EluGrad"
   input: "^OptimizeLoss/gradients/extractor/Conv_4/BiasAdd_grad/BiasAddGrad"
+  input: "^OptimizeLoss/gradients/extractor/Conv_4/Elu_grad/EluGrad"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_4/BiasAdd_grad/tuple/control_dependency"
@@ -16134,81 +16500,9 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Const"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "@\000\000\000\001\000\000\000\001\000\000\000\200\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "\001\000\000\000\001\000\000\000\200\000\000\000\200\000\000\000"
-      }
-    }
-  }
-}
-node {
   name: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Const"
+  input: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/ShapeN"
   input: "extractor/Conv_4/weights/read"
   input: "OptimizeLoss/gradients/extractor/Conv_4/BiasAdd_grad/tuple/control_dependency"
   attr {
@@ -16283,7 +16577,7 @@ node {
   name: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "extractor/mul"
-  input: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Const_1"
+  input: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/ShapeN:1"
   input: "OptimizeLoss/gradients/extractor/Conv_4/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -16356,8 +16650,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Conv2DBackpropInput"
   input: "^OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/tuple/control_dependency"
@@ -16540,7 +16834,7 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/mul_grad/mul"
+  name: "OptimizeLoss/gradients/extractor/mul_grad/Mul"
   op: "Mul"
   input: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/tuple/control_dependency"
   input: "extractor/add"
@@ -16575,7 +16869,7 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/mul_grad/Sum"
   op: "Sum"
-  input: "OptimizeLoss/gradients/extractor/mul_grad/mul"
+  input: "OptimizeLoss/gradients/extractor/mul_grad/Mul"
   input: "OptimizeLoss/gradients/extractor/mul_grad/BroadcastGradientArgs"
   attr {
     key: "T"
@@ -16594,7 +16888,6 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
         }
       }
     }
@@ -16634,7 +16927,7 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/mul_grad/mul_1"
+  name: "OptimizeLoss/gradients/extractor/mul_grad/Mul_1"
   op: "Mul"
   input: "extractor/mul/x"
   input: "OptimizeLoss/gradients/extractor/Conv_4/Conv2D_grad/tuple/control_dependency"
@@ -16669,7 +16962,7 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/mul_grad/Sum_1"
   op: "Sum"
-  input: "OptimizeLoss/gradients/extractor/mul_grad/mul_1"
+  input: "OptimizeLoss/gradients/extractor/mul_grad/Mul_1"
   input: "OptimizeLoss/gradients/extractor/mul_grad/BroadcastGradientArgs:1"
   attr {
     key: "T"
@@ -16688,7 +16981,12 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17190,6 +17488,12 @@ node {
       }
     }
   }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Max_grad/DynamicStitch"
@@ -17216,7 +17520,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 4
           }
         }
       }
@@ -17245,7 +17549,18 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17273,7 +17588,18 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17295,7 +17621,18 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 6
+          }
+          dim {
+            size: 16
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17318,11 +17655,28 @@ node {
     }
   }
   attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+  attr {
     key: "_output_shapes"
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 6
+          }
+          dim {
+            size: 16
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17350,7 +17704,12 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17384,7 +17743,18 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17406,7 +17776,18 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 6
+          }
+          dim {
+            size: 16
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17805,6 +18186,12 @@ node {
       }
     }
   }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Mean_grad/DynamicStitch"
@@ -17839,7 +18226,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 4
           }
         }
       }
@@ -17909,7 +18296,7 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 4
           }
         }
       }
@@ -17970,7 +18357,18 @@ node {
     value {
       list {
         shape {
-          unknown_rank: true
+          dim {
+            size: 64
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 1
+          }
+          dim {
+            size: 128
+          }
         }
       }
     }
@@ -17999,16 +18397,16 @@ node {
       list {
         shape {
           dim {
-            size: -1
+            size: 64
           }
           dim {
-            size: -1
+            size: 6
           }
           dim {
-            size: -1
+            size: 16
           }
           dim {
-            size: -1
+            size: 128
           }
         }
       }
@@ -18604,81 +19002,9 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Const"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "@\000\000\000\014\000\000\000 \000\000\000@\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "\003\000\000\000\003\000\000\000@\000\000\000\200\000\000\000"
-      }
-    }
-  }
-}
-node {
   name: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Const"
+  input: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/ShapeN"
   input: "extractor/Conv_3/weights/read"
   input: "OptimizeLoss/gradients/extractor/Conv_3/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
@@ -18753,7 +19079,7 @@ node {
   name: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "extractor/MaxPool2D_2/MaxPool"
-  input: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Const_1"
+  input: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/ShapeN:1"
   input: "OptimizeLoss/gradients/extractor/Conv_3/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -18826,8 +19152,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Conv2DBackpropInput"
   input: "^OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_3/Conv2D_grad/tuple/control_dependency"
@@ -19390,81 +19716,9 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Const"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "@\000\000\000\030\000\000\000@\000\000\000 \000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "\003\000\000\000\003\000\000\000 \000\000\000@\000\000\000"
-      }
-    }
-  }
-}
-node {
   name: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Const"
+  input: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/ShapeN"
   input: "extractor/Conv_2/weights/read"
   input: "OptimizeLoss/gradients/extractor/Conv_2/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
@@ -19539,7 +19793,7 @@ node {
   name: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "extractor/MaxPool2D_1/MaxPool"
-  input: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Const_1"
+  input: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/ShapeN:1"
   input: "OptimizeLoss/gradients/extractor/Conv_2/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -19612,8 +19866,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Conv2DBackpropInput"
   input: "^OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_2/Conv2D_grad/tuple/control_dependency"
@@ -20176,81 +20430,9 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Const"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "@\000\000\0001\000\000\000\200\000\000\000\020\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "\003\000\000\000\003\000\000\000\020\000\000\000 \000\000\000"
-      }
-    }
-  }
-}
-node {
   name: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Const"
+  input: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/ShapeN"
   input: "extractor/Conv_1/weights/read"
   input: "OptimizeLoss/gradients/extractor/Conv_1/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
@@ -20325,7 +20507,7 @@ node {
   name: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "extractor/MaxPool2D/MaxPool"
-  input: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Const_1"
+  input: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/ShapeN:1"
   input: "OptimizeLoss/gradients/extractor/Conv_1/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -20398,8 +20580,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Conv2DBackpropInput"
   input: "^OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv_1/Conv2D_grad/tuple/control_dependency"
@@ -20962,81 +21144,9 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Const"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "@\000\000\000b\000\000\000\001\001\000\000\002\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 4
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 4
-          }
-        }
-        tensor_content: "\003\000\000\000\003\000\000\000\002\000\000\000\020\000\000\000"
-      }
-    }
-  }
-}
-node {
   name: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Const"
+  input: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/ShapeN"
   input: "extractor/Conv/weights/read"
   input: "OptimizeLoss/gradients/extractor/Conv/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
@@ -21111,7 +21221,7 @@ node {
   name: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "extractor/BatchNorm/FusedBatchNorm"
-  input: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Const_1"
+  input: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/ShapeN:1"
   input: "OptimizeLoss/gradients/extractor/Conv/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -21184,8 +21294,8 @@ node {
 node {
   name: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Conv2DBackpropInput"
   input: "^OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/Conv2DBackpropInput"
 }
 node {
   name: "OptimizeLoss/gradients/extractor/Conv/Conv2D_grad/tuple/control_dependency"
@@ -22759,6 +22869,69 @@ node {
   }
 }
 node {
+  name: "OptimizeLoss/VerifyFinite/CheckNumerics"
+  op: "CheckNumerics"
+  input: "OptimizeLoss/global_norm_1/global_norm"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@OptimizeLoss/global_norm_1/global_norm"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "message"
+    value {
+      s: "Found Inf or NaN global norm."
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/VerifyFinite/control_dependency"
+  op: "Identity"
+  input: "OptimizeLoss/global_norm_1/global_norm"
+  input: "^OptimizeLoss/VerifyFinite/CheckNumerics"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@OptimizeLoss/global_norm_1/global_norm"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+}
+node {
   name: "OptimizeLoss/clip_by_global_norm/truediv/x"
   op: "Const"
   attr {
@@ -22792,7 +22965,7 @@ node {
   name: "OptimizeLoss/clip_by_global_norm/truediv"
   op: "RealDiv"
   input: "OptimizeLoss/clip_by_global_norm/truediv/x"
-  input: "OptimizeLoss/global_norm_1/global_norm"
+  input: "OptimizeLoss/VerifyFinite/control_dependency"
   attr {
     key: "T"
     value {
@@ -23779,7 +23952,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -23819,7 +23992,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -23851,7 +24024,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -23882,7 +24055,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -25110,8 +25283,98 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/extractor/Conv_1/weights/Momentum/Initializer/zeros"
+  name: "OptimizeLoss/extractor/Conv_1/weights/Momentum/Initializer/zeros/shape_as_tensor"
   op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_1/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 4
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\003\000\000\000\003\000\000\000\020\000\000\000 \000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_1/weights/Momentum/Initializer/zeros/Const"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_1/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_1/weights/Momentum/Initializer/zeros"
+  op: "Fill"
+  input: "OptimizeLoss/extractor/Conv_1/weights/Momentum/Initializer/zeros/shape_as_tensor"
+  input: "OptimizeLoss/extractor/Conv_1/weights/Momentum/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
   attr {
     key: "_class"
     value {
@@ -25142,32 +25405,9 @@ node {
     }
   }
   attr {
-    key: "dtype"
+    key: "index_type"
     value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-          dim {
-            size: 3
-          }
-          dim {
-            size: 3
-          }
-          dim {
-            size: 16
-          }
-          dim {
-            size: 32
-          }
-        }
-        float_val: 0.0
-      }
+      type: DT_INT32
     }
   }
 }
@@ -25506,8 +25746,98 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/extractor/Conv_2/weights/Momentum/Initializer/zeros"
+  name: "OptimizeLoss/extractor/Conv_2/weights/Momentum/Initializer/zeros/shape_as_tensor"
   op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_2/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 4
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\003\000\000\000\003\000\000\000 \000\000\000@\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_2/weights/Momentum/Initializer/zeros/Const"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_2/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_2/weights/Momentum/Initializer/zeros"
+  op: "Fill"
+  input: "OptimizeLoss/extractor/Conv_2/weights/Momentum/Initializer/zeros/shape_as_tensor"
+  input: "OptimizeLoss/extractor/Conv_2/weights/Momentum/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
   attr {
     key: "_class"
     value {
@@ -25538,32 +25868,9 @@ node {
     }
   }
   attr {
-    key: "dtype"
+    key: "index_type"
     value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-          dim {
-            size: 3
-          }
-          dim {
-            size: 3
-          }
-          dim {
-            size: 32
-          }
-          dim {
-            size: 64
-          }
-        }
-        float_val: 0.0
-      }
+      type: DT_INT32
     }
   }
 }
@@ -25902,8 +26209,98 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/extractor/Conv_3/weights/Momentum/Initializer/zeros"
+  name: "OptimizeLoss/extractor/Conv_3/weights/Momentum/Initializer/zeros/shape_as_tensor"
   op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_3/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 4
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\003\000\000\000\003\000\000\000@\000\000\000\200\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_3/weights/Momentum/Initializer/zeros/Const"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_3/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_3/weights/Momentum/Initializer/zeros"
+  op: "Fill"
+  input: "OptimizeLoss/extractor/Conv_3/weights/Momentum/Initializer/zeros/shape_as_tensor"
+  input: "OptimizeLoss/extractor/Conv_3/weights/Momentum/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
   attr {
     key: "_class"
     value {
@@ -25934,32 +26331,9 @@ node {
     }
   }
   attr {
-    key: "dtype"
+    key: "index_type"
     value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-          dim {
-            size: 3
-          }
-          dim {
-            size: 3
-          }
-          dim {
-            size: 64
-          }
-          dim {
-            size: 128
-          }
-        }
-        float_val: 0.0
-      }
+      type: DT_INT32
     }
   }
 }
@@ -26298,8 +26672,98 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/extractor/Conv_4/weights/Momentum/Initializer/zeros"
+  name: "OptimizeLoss/extractor/Conv_4/weights/Momentum/Initializer/zeros/shape_as_tensor"
   op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_4/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 4
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\001\000\000\000\001\000\000\000\200\000\000\000\200\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_4/weights/Momentum/Initializer/zeros/Const"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_4/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_4/weights/Momentum/Initializer/zeros"
+  op: "Fill"
+  input: "OptimizeLoss/extractor/Conv_4/weights/Momentum/Initializer/zeros/shape_as_tensor"
+  input: "OptimizeLoss/extractor/Conv_4/weights/Momentum/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
   attr {
     key: "_class"
     value {
@@ -26330,32 +26794,9 @@ node {
     }
   }
   attr {
-    key: "dtype"
+    key: "index_type"
     value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-          dim {
-            size: 1
-          }
-          dim {
-            size: 1
-          }
-          dim {
-            size: 128
-          }
-          dim {
-            size: 128
-          }
-        }
-        float_val: 0.0
-      }
+      type: DT_INT32
     }
   }
 }
@@ -26694,8 +27135,98 @@ node {
   }
 }
 node {
-  name: "OptimizeLoss/extractor/Conv_5/weights/Momentum/Initializer/zeros"
+  name: "OptimizeLoss/extractor/Conv_5/weights/Momentum/Initializer/zeros/shape_as_tensor"
   op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_5/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+          dim {
+            size: 4
+          }
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\001\000\000\000\001\000\000\000\200\000\000\000 \000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_5/weights/Momentum/Initializer/zeros/Const"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@extractor/Conv_5/weights"
+      }
+    }
+  }
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "OptimizeLoss/extractor/Conv_5/weights/Momentum/Initializer/zeros"
+  op: "Fill"
+  input: "OptimizeLoss/extractor/Conv_5/weights/Momentum/Initializer/zeros/shape_as_tensor"
+  input: "OptimizeLoss/extractor/Conv_5/weights/Momentum/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
   attr {
     key: "_class"
     value {
@@ -26719,39 +27250,16 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
     }
   }
   attr {
-    key: "dtype"
+    key: "index_type"
     value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-          dim {
-            size: 1
-          }
-          dim {
-            size: 1
-          }
-          dim {
-            size: 128
-          }
-          dim {
-            size: 12
-          }
-        }
-        float_val: 0.0
-      }
+      type: DT_INT32
     }
   }
 }
@@ -26781,7 +27289,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -26813,7 +27321,7 @@ node {
           size: 128
         }
         dim {
-          size: 12
+          size: 32
         }
       }
     }
@@ -26859,7 +27367,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -26911,7 +27419,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -26935,7 +27443,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -26954,7 +27462,7 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
           dim {
-            size: 12
+            size: 32
           }
         }
         float_val: 0.0
@@ -26979,7 +27487,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -27002,7 +27510,7 @@ node {
     value {
       shape {
         dim {
-          size: 12
+          size: 32
         }
       }
     }
@@ -27039,7 +27547,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -27082,7 +27590,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -27718,7 +28226,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -27765,7 +28273,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -27788,18 +28296,18 @@ node {
   name: "OptimizeLoss/train/update"
   op: "NoOp"
   input: "^OptimizeLoss/train/update_extractor/BatchNorm/beta/ApplyMomentum"
-  input: "^OptimizeLoss/train/update_extractor/Conv/weights/ApplyMomentum"
   input: "^OptimizeLoss/train/update_extractor/Conv/BatchNorm/beta/ApplyMomentum"
-  input: "^OptimizeLoss/train/update_extractor/Conv_1/weights/ApplyMomentum"
+  input: "^OptimizeLoss/train/update_extractor/Conv/weights/ApplyMomentum"
   input: "^OptimizeLoss/train/update_extractor/Conv_1/BatchNorm/beta/ApplyMomentum"
-  input: "^OptimizeLoss/train/update_extractor/Conv_2/weights/ApplyMomentum"
+  input: "^OptimizeLoss/train/update_extractor/Conv_1/weights/ApplyMomentum"
   input: "^OptimizeLoss/train/update_extractor/Conv_2/BatchNorm/beta/ApplyMomentum"
-  input: "^OptimizeLoss/train/update_extractor/Conv_3/weights/ApplyMomentum"
+  input: "^OptimizeLoss/train/update_extractor/Conv_2/weights/ApplyMomentum"
   input: "^OptimizeLoss/train/update_extractor/Conv_3/BatchNorm/beta/ApplyMomentum"
-  input: "^OptimizeLoss/train/update_extractor/Conv_4/weights/ApplyMomentum"
+  input: "^OptimizeLoss/train/update_extractor/Conv_3/weights/ApplyMomentum"
   input: "^OptimizeLoss/train/update_extractor/Conv_4/biases/ApplyMomentum"
-  input: "^OptimizeLoss/train/update_extractor/Conv_5/weights/ApplyMomentum"
+  input: "^OptimizeLoss/train/update_extractor/Conv_4/weights/ApplyMomentum"
   input: "^OptimizeLoss/train/update_extractor/Conv_5/biases/ApplyMomentum"
+  input: "^OptimizeLoss/train/update_extractor/Conv_5/weights/ApplyMomentum"
 }
 node {
   name: "OptimizeLoss/train/value"
@@ -27958,44 +28466,44 @@ node {
 node {
   name: "init"
   op: "NoOp"
-  input: "^global_step/Assign"
+  input: "^OptimizeLoss/extractor/BatchNorm/beta/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv/BatchNorm/beta/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv/weights/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_1/BatchNorm/beta/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_1/weights/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_2/BatchNorm/beta/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_2/weights/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_3/BatchNorm/beta/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_3/weights/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_4/biases/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_4/weights/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_5/biases/Momentum/Assign"
+  input: "^OptimizeLoss/extractor/Conv_5/weights/Momentum/Assign"
+  input: "^OptimizeLoss/learning_rate/Assign"
   input: "^extractor/BatchNorm/beta/Assign"
   input: "^extractor/BatchNorm/moving_mean/Assign"
   input: "^extractor/BatchNorm/moving_variance/Assign"
-  input: "^extractor/Conv/weights/Assign"
   input: "^extractor/Conv/BatchNorm/beta/Assign"
   input: "^extractor/Conv/BatchNorm/moving_mean/Assign"
   input: "^extractor/Conv/BatchNorm/moving_variance/Assign"
-  input: "^extractor/Conv_1/weights/Assign"
+  input: "^extractor/Conv/weights/Assign"
   input: "^extractor/Conv_1/BatchNorm/beta/Assign"
   input: "^extractor/Conv_1/BatchNorm/moving_mean/Assign"
   input: "^extractor/Conv_1/BatchNorm/moving_variance/Assign"
-  input: "^extractor/Conv_2/weights/Assign"
+  input: "^extractor/Conv_1/weights/Assign"
   input: "^extractor/Conv_2/BatchNorm/beta/Assign"
   input: "^extractor/Conv_2/BatchNorm/moving_mean/Assign"
   input: "^extractor/Conv_2/BatchNorm/moving_variance/Assign"
-  input: "^extractor/Conv_3/weights/Assign"
+  input: "^extractor/Conv_2/weights/Assign"
   input: "^extractor/Conv_3/BatchNorm/beta/Assign"
   input: "^extractor/Conv_3/BatchNorm/moving_mean/Assign"
   input: "^extractor/Conv_3/BatchNorm/moving_variance/Assign"
-  input: "^extractor/Conv_4/weights/Assign"
+  input: "^extractor/Conv_3/weights/Assign"
   input: "^extractor/Conv_4/biases/Assign"
-  input: "^extractor/Conv_5/weights/Assign"
+  input: "^extractor/Conv_4/weights/Assign"
   input: "^extractor/Conv_5/biases/Assign"
-  input: "^OptimizeLoss/learning_rate/Assign"
-  input: "^OptimizeLoss/extractor/BatchNorm/beta/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv/weights/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv/BatchNorm/beta/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_1/weights/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_1/BatchNorm/beta/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_2/weights/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_2/BatchNorm/beta/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_3/weights/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_3/BatchNorm/beta/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_4/weights/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_4/biases/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_5/weights/Momentum/Assign"
-  input: "^OptimizeLoss/extractor/Conv_5/biases/Momentum/Assign"
+  input: "^extractor/Conv_5/weights/Assign"
+  input: "^global_step/Assign"
 }
 node {
   name: "init_1"
@@ -30203,11 +30711,49 @@ node {
   }
 }
 node {
-  name: "report_uninitialized_variables/boolean_mask/Gather"
-  op: "Gather"
+  name: "report_uninitialized_variables/boolean_mask/GatherV2/axis"
+  op: "Const"
+  device: "/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "report_uninitialized_variables/boolean_mask/GatherV2"
+  op: "GatherV2"
   input: "report_uninitialized_variables/boolean_mask/Reshape"
   input: "report_uninitialized_variables/boolean_mask/Squeeze"
+  input: "report_uninitialized_variables/boolean_mask/GatherV2/axis"
   device: "/device:CPU:0"
+  attr {
+    key: "Taxis"
+    value {
+      type: DT_INT32
+    }
+  }
   attr {
     key: "Tindices"
     value {
@@ -30230,12 +30776,6 @@ node {
           }
         }
       }
-    }
-  }
-  attr {
-    key: "validate_indices"
-    value {
-      b: true
     }
   }
 }
@@ -30306,7 +30846,7 @@ node {
 node {
   name: "concat"
   op: "ConcatV2"
-  input: "report_uninitialized_variables/boolean_mask/Gather"
+  input: "report_uninitialized_variables/boolean_mask/GatherV2"
   input: "report_uninitialized_resources/Const"
   input: "concat/axis"
   attr {
@@ -32536,11 +33076,49 @@ node {
   }
 }
 node {
-  name: "report_uninitialized_variables_1/boolean_mask/Gather"
-  op: "Gather"
+  name: "report_uninitialized_variables_1/boolean_mask/GatherV2/axis"
+  op: "Const"
+  device: "/device:CPU:0"
+  attr {
+    key: "_output_shapes"
+    value {
+      list {
+        shape {
+        }
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "report_uninitialized_variables_1/boolean_mask/GatherV2"
+  op: "GatherV2"
   input: "report_uninitialized_variables_1/boolean_mask/Reshape"
   input: "report_uninitialized_variables_1/boolean_mask/Squeeze"
+  input: "report_uninitialized_variables_1/boolean_mask/GatherV2/axis"
   device: "/device:CPU:0"
+  attr {
+    key: "Taxis"
+    value {
+      type: DT_INT32
+    }
+  }
   attr {
     key: "Tindices"
     value {
@@ -32565,12 +33143,6 @@ node {
       }
     }
   }
-  attr {
-    key: "validate_indices"
-    value {
-      b: true
-    }
-  }
 }
 node {
   name: "init_2"
@@ -32588,8 +33160,8 @@ node {
   name: "group_deps_1"
   op: "NoOp"
   input: "^init_2"
-  input: "^init_all_tables"
   input: "^init_3"
+  input: "^init_all_tables"
 }
 node {
   name: "Merge/MergeSummary"
@@ -32671,7 +33243,7 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "_temp_17f086f37a5144428ac94db102bc657d/part"
+        string_val: "_temp_0cc37bdc37904d31b86bee08ba1ef9d3/part"
       }
     }
   }
@@ -33104,8 +33676,8 @@ node {
   name: "save/Identity"
   op: "Identity"
   input: "save/Const"
-  input: "^save/control_dependency"
   input: "^save/MergeV2Checkpoints"
+  input: "^save/control_dependency"
   device: "/device:CPU:0"
   attr {
     key: "T"
@@ -33126,13 +33698,14 @@ node {
 node {
   name: "save/RestoreV2/tensor_names"
   op: "Const"
+  device: "/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
       list {
         shape {
           dim {
-            size: 1
+            size: 38
           }
         }
       }
@@ -33151,10 +33724,47 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 1
+            size: 38
           }
         }
         string_val: "OptimizeLoss/extractor/BatchNorm/beta/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv/BatchNorm/beta/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv/weights/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_1/BatchNorm/beta/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_1/weights/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_2/BatchNorm/beta/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_2/weights/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_3/BatchNorm/beta/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_3/weights/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_4/biases/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_4/weights/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_5/biases/Momentum"
+        string_val: "OptimizeLoss/extractor/Conv_5/weights/Momentum"
+        string_val: "OptimizeLoss/learning_rate"
+        string_val: "extractor/BatchNorm/beta"
+        string_val: "extractor/BatchNorm/moving_mean"
+        string_val: "extractor/BatchNorm/moving_variance"
+        string_val: "extractor/Conv/BatchNorm/beta"
+        string_val: "extractor/Conv/BatchNorm/moving_mean"
+        string_val: "extractor/Conv/BatchNorm/moving_variance"
+        string_val: "extractor/Conv/weights"
+        string_val: "extractor/Conv_1/BatchNorm/beta"
+        string_val: "extractor/Conv_1/BatchNorm/moving_mean"
+        string_val: "extractor/Conv_1/BatchNorm/moving_variance"
+        string_val: "extractor/Conv_1/weights"
+        string_val: "extractor/Conv_2/BatchNorm/beta"
+        string_val: "extractor/Conv_2/BatchNorm/moving_mean"
+        string_val: "extractor/Conv_2/BatchNorm/moving_variance"
+        string_val: "extractor/Conv_2/weights"
+        string_val: "extractor/Conv_3/BatchNorm/beta"
+        string_val: "extractor/Conv_3/BatchNorm/moving_mean"
+        string_val: "extractor/Conv_3/BatchNorm/moving_variance"
+        string_val: "extractor/Conv_3/weights"
+        string_val: "extractor/Conv_4/biases"
+        string_val: "extractor/Conv_4/weights"
+        string_val: "extractor/Conv_5/biases"
+        string_val: "extractor/Conv_5/weights"
+        string_val: "global_step"
       }
     }
   }
@@ -33162,13 +33772,14 @@ node {
 node {
   name: "save/RestoreV2/shape_and_slices"
   op: "Const"
+  device: "/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
       list {
         shape {
           dim {
-            size: 1
+            size: 38
           }
         }
       }
@@ -33187,9 +33798,46 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 1
+            size: 38
           }
         }
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
         string_val: ""
       }
     }
@@ -33201,10 +33849,122 @@ node {
   input: "save/Const"
   input: "save/RestoreV2/tensor_names"
   input: "save/RestoreV2/shape_and_slices"
+  device: "/device:CPU:0"
   attr {
     key: "_output_shapes"
     value {
       list {
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
+        shape {
+          unknown_rank: true
+        }
         shape {
           unknown_rank: true
         }
@@ -33216,6 +33976,43 @@ node {
     value {
       list {
         type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_INT64
       }
     }
   }
@@ -33265,107 +34062,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_1/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv/BatchNorm/beta/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_1/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_1"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_1/tensor_names"
-  input: "save/RestoreV2_1/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_1"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv/BatchNorm/beta/Momentum"
-  input: "save/RestoreV2_1"
+  input: "save/RestoreV2:1"
   attr {
     key: "T"
     value {
@@ -33406,107 +34106,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_2/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv/weights/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_2/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_2"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_2/tensor_names"
-  input: "save/RestoreV2_2/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_2"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv/weights/Momentum"
-  input: "save/RestoreV2_2"
+  input: "save/RestoreV2:2"
   attr {
     key: "T"
     value {
@@ -33556,107 +34159,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_3/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_1/BatchNorm/beta/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_3/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_3"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_3/tensor_names"
-  input: "save/RestoreV2_3/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_3"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_1/BatchNorm/beta/Momentum"
-  input: "save/RestoreV2_3"
+  input: "save/RestoreV2:3"
   attr {
     key: "T"
     value {
@@ -33697,107 +34203,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_4/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_1/weights/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_4/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_4"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_4/tensor_names"
-  input: "save/RestoreV2_4/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_4"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_1/weights/Momentum"
-  input: "save/RestoreV2_4"
+  input: "save/RestoreV2:4"
   attr {
     key: "T"
     value {
@@ -33847,107 +34256,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_5/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_2/BatchNorm/beta/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_5/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_5"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_5/tensor_names"
-  input: "save/RestoreV2_5/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_5"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_2/BatchNorm/beta/Momentum"
-  input: "save/RestoreV2_5"
+  input: "save/RestoreV2:5"
   attr {
     key: "T"
     value {
@@ -33988,107 +34300,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_6/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_2/weights/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_6/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_6"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_6/tensor_names"
-  input: "save/RestoreV2_6/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_6"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_2/weights/Momentum"
-  input: "save/RestoreV2_6"
+  input: "save/RestoreV2:6"
   attr {
     key: "T"
     value {
@@ -34138,107 +34353,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_7/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_3/BatchNorm/beta/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_7/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_7"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_7/tensor_names"
-  input: "save/RestoreV2_7/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_7"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_3/BatchNorm/beta/Momentum"
-  input: "save/RestoreV2_7"
+  input: "save/RestoreV2:7"
   attr {
     key: "T"
     value {
@@ -34279,107 +34397,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_8/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_3/weights/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_8/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_8"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_8/tensor_names"
-  input: "save/RestoreV2_8/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_8"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_3/weights/Momentum"
-  input: "save/RestoreV2_8"
+  input: "save/RestoreV2:8"
   attr {
     key: "T"
     value {
@@ -34429,107 +34450,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_9/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_4/biases/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_9/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_9"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_9/tensor_names"
-  input: "save/RestoreV2_9/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_9"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_4/biases/Momentum"
-  input: "save/RestoreV2_9"
+  input: "save/RestoreV2:9"
   attr {
     key: "T"
     value {
@@ -34570,107 +34494,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_10/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_4/weights/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_10/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_10"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_10/tensor_names"
-  input: "save/RestoreV2_10/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_10"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_4/weights/Momentum"
-  input: "save/RestoreV2_10"
+  input: "save/RestoreV2:10"
   attr {
     key: "T"
     value {
@@ -34720,107 +34547,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_11/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_5/biases/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_11/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_11"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_11/tensor_names"
-  input: "save/RestoreV2_11/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_11"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_5/biases/Momentum"
-  input: "save/RestoreV2_11"
+  input: "save/RestoreV2:11"
   attr {
     key: "T"
     value {
@@ -34841,7 +34571,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -34861,107 +34591,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_12/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/extractor/Conv_5/weights/Momentum"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_12/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_12"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_12/tensor_names"
-  input: "save/RestoreV2_12/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_12"
   op: "Assign"
   input: "OptimizeLoss/extractor/Conv_5/weights/Momentum"
-  input: "save/RestoreV2_12"
+  input: "save/RestoreV2:12"
   attr {
     key: "T"
     value {
@@ -34991,7 +34624,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -35011,107 +34644,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_13/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "OptimizeLoss/learning_rate"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_13/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_13"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_13/tensor_names"
-  input: "save/RestoreV2_13/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_13"
   op: "Assign"
   input: "OptimizeLoss/learning_rate"
-  input: "save/RestoreV2_13"
+  input: "save/RestoreV2:13"
   attr {
     key: "T"
     value {
@@ -35149,107 +34685,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_14/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/BatchNorm/beta"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_14/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_14"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_14/tensor_names"
-  input: "save/RestoreV2_14/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_14"
   op: "Assign"
   input: "extractor/BatchNorm/beta"
-  input: "save/RestoreV2_14"
+  input: "save/RestoreV2:14"
   attr {
     key: "T"
     value {
@@ -35290,107 +34729,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_15/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/BatchNorm/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_15/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_15"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_15/tensor_names"
-  input: "save/RestoreV2_15/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_15"
   op: "Assign"
   input: "extractor/BatchNorm/moving_mean"
-  input: "save/RestoreV2_15"
+  input: "save/RestoreV2:15"
   attr {
     key: "T"
     value {
@@ -35431,107 +34773,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_16/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/BatchNorm/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_16/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_16"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_16/tensor_names"
-  input: "save/RestoreV2_16/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_16"
   op: "Assign"
   input: "extractor/BatchNorm/moving_variance"
-  input: "save/RestoreV2_16"
+  input: "save/RestoreV2:16"
   attr {
     key: "T"
     value {
@@ -35572,107 +34817,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_17/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv/BatchNorm/beta"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_17/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_17"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_17/tensor_names"
-  input: "save/RestoreV2_17/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_17"
   op: "Assign"
   input: "extractor/Conv/BatchNorm/beta"
-  input: "save/RestoreV2_17"
+  input: "save/RestoreV2:17"
   attr {
     key: "T"
     value {
@@ -35713,107 +34861,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_18/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv/BatchNorm/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_18/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_18"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_18/tensor_names"
-  input: "save/RestoreV2_18/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_18"
   op: "Assign"
   input: "extractor/Conv/BatchNorm/moving_mean"
-  input: "save/RestoreV2_18"
+  input: "save/RestoreV2:18"
   attr {
     key: "T"
     value {
@@ -35854,107 +34905,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_19/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv/BatchNorm/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_19/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_19"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_19/tensor_names"
-  input: "save/RestoreV2_19/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_19"
   op: "Assign"
   input: "extractor/Conv/BatchNorm/moving_variance"
-  input: "save/RestoreV2_19"
+  input: "save/RestoreV2:19"
   attr {
     key: "T"
     value {
@@ -35995,107 +34949,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_20/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_20/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_20"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_20/tensor_names"
-  input: "save/RestoreV2_20/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_20"
   op: "Assign"
   input: "extractor/Conv/weights"
-  input: "save/RestoreV2_20"
+  input: "save/RestoreV2:20"
   attr {
     key: "T"
     value {
@@ -36145,107 +35002,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_21/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_1/BatchNorm/beta"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_21/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_21"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_21/tensor_names"
-  input: "save/RestoreV2_21/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_21"
   op: "Assign"
   input: "extractor/Conv_1/BatchNorm/beta"
-  input: "save/RestoreV2_21"
+  input: "save/RestoreV2:21"
   attr {
     key: "T"
     value {
@@ -36286,107 +35046,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_22/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_1/BatchNorm/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_22/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_22"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_22/tensor_names"
-  input: "save/RestoreV2_22/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_22"
   op: "Assign"
   input: "extractor/Conv_1/BatchNorm/moving_mean"
-  input: "save/RestoreV2_22"
+  input: "save/RestoreV2:22"
   attr {
     key: "T"
     value {
@@ -36427,107 +35090,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_23/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_1/BatchNorm/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_23/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_23"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_23/tensor_names"
-  input: "save/RestoreV2_23/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_23"
   op: "Assign"
   input: "extractor/Conv_1/BatchNorm/moving_variance"
-  input: "save/RestoreV2_23"
+  input: "save/RestoreV2:23"
   attr {
     key: "T"
     value {
@@ -36568,107 +35134,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_24/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_1/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_24/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_24"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_24/tensor_names"
-  input: "save/RestoreV2_24/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_24"
   op: "Assign"
   input: "extractor/Conv_1/weights"
-  input: "save/RestoreV2_24"
+  input: "save/RestoreV2:24"
   attr {
     key: "T"
     value {
@@ -36718,107 +35187,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_25/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_2/BatchNorm/beta"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_25/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_25"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_25/tensor_names"
-  input: "save/RestoreV2_25/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_25"
   op: "Assign"
   input: "extractor/Conv_2/BatchNorm/beta"
-  input: "save/RestoreV2_25"
+  input: "save/RestoreV2:25"
   attr {
     key: "T"
     value {
@@ -36859,107 +35231,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_26/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_2/BatchNorm/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_26/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_26"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_26/tensor_names"
-  input: "save/RestoreV2_26/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_26"
   op: "Assign"
   input: "extractor/Conv_2/BatchNorm/moving_mean"
-  input: "save/RestoreV2_26"
+  input: "save/RestoreV2:26"
   attr {
     key: "T"
     value {
@@ -37000,107 +35275,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_27/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_2/BatchNorm/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_27/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_27"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_27/tensor_names"
-  input: "save/RestoreV2_27/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_27"
   op: "Assign"
   input: "extractor/Conv_2/BatchNorm/moving_variance"
-  input: "save/RestoreV2_27"
+  input: "save/RestoreV2:27"
   attr {
     key: "T"
     value {
@@ -37141,107 +35319,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_28/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_2/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_28/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_28"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_28/tensor_names"
-  input: "save/RestoreV2_28/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_28"
   op: "Assign"
   input: "extractor/Conv_2/weights"
-  input: "save/RestoreV2_28"
+  input: "save/RestoreV2:28"
   attr {
     key: "T"
     value {
@@ -37291,107 +35372,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_29/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_3/BatchNorm/beta"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_29/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_29"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_29/tensor_names"
-  input: "save/RestoreV2_29/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_29"
   op: "Assign"
   input: "extractor/Conv_3/BatchNorm/beta"
-  input: "save/RestoreV2_29"
+  input: "save/RestoreV2:29"
   attr {
     key: "T"
     value {
@@ -37432,107 +35416,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_30/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_3/BatchNorm/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_30/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_30"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_30/tensor_names"
-  input: "save/RestoreV2_30/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_30"
   op: "Assign"
   input: "extractor/Conv_3/BatchNorm/moving_mean"
-  input: "save/RestoreV2_30"
+  input: "save/RestoreV2:30"
   attr {
     key: "T"
     value {
@@ -37573,107 +35460,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_31/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_3/BatchNorm/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_31/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_31"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_31/tensor_names"
-  input: "save/RestoreV2_31/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_31"
   op: "Assign"
   input: "extractor/Conv_3/BatchNorm/moving_variance"
-  input: "save/RestoreV2_31"
+  input: "save/RestoreV2:31"
   attr {
     key: "T"
     value {
@@ -37714,107 +35504,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_32/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_3/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_32/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_32"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_32/tensor_names"
-  input: "save/RestoreV2_32/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_32"
   op: "Assign"
   input: "extractor/Conv_3/weights"
-  input: "save/RestoreV2_32"
+  input: "save/RestoreV2:32"
   attr {
     key: "T"
     value {
@@ -37864,107 +35557,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_33/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_4/biases"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_33/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_33"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_33/tensor_names"
-  input: "save/RestoreV2_33/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_33"
   op: "Assign"
   input: "extractor/Conv_4/biases"
-  input: "save/RestoreV2_33"
+  input: "save/RestoreV2:33"
   attr {
     key: "T"
     value {
@@ -38005,107 +35601,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_34/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_4/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_34/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_34"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_34/tensor_names"
-  input: "save/RestoreV2_34/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_34"
   op: "Assign"
   input: "extractor/Conv_4/weights"
-  input: "save/RestoreV2_34"
+  input: "save/RestoreV2:34"
   attr {
     key: "T"
     value {
@@ -38155,107 +35654,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_35/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_5/biases"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_35/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_35"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_35/tensor_names"
-  input: "save/RestoreV2_35/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_35"
   op: "Assign"
   input: "extractor/Conv_5/biases"
-  input: "save/RestoreV2_35"
+  input: "save/RestoreV2:35"
   attr {
     key: "T"
     value {
@@ -38276,7 +35678,7 @@ node {
       list {
         shape {
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -38296,107 +35698,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_36/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "extractor/Conv_5/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_36/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_36"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_36/tensor_names"
-  input: "save/RestoreV2_36/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_36"
   op: "Assign"
   input: "extractor/Conv_5/weights"
-  input: "save/RestoreV2_36"
+  input: "save/RestoreV2:36"
   attr {
     key: "T"
     value {
@@ -38426,7 +35731,7 @@ node {
             size: 128
           }
           dim {
-            size: 12
+            size: 32
           }
         }
       }
@@ -38446,107 +35751,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_37/tensor_names"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "global_step"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_37/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 1
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_37"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_37/tensor_names"
-  input: "save/RestoreV2_37/shape_and_slices"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          unknown_rank: true
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_INT64
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_37"
   op: "Assign"
   input: "global_step"
-  input: "save/RestoreV2_37"
+  input: "save/RestoreV2:37"
   attr {
     key: "T"
     value {
@@ -38588,14 +35796,6 @@ node {
   op: "NoOp"
   input: "^save/Assign"
   input: "^save/Assign_1"
-  input: "^save/Assign_2"
-  input: "^save/Assign_3"
-  input: "^save/Assign_4"
-  input: "^save/Assign_5"
-  input: "^save/Assign_6"
-  input: "^save/Assign_7"
-  input: "^save/Assign_8"
-  input: "^save/Assign_9"
   input: "^save/Assign_10"
   input: "^save/Assign_11"
   input: "^save/Assign_12"
@@ -38606,6 +35806,7 @@ node {
   input: "^save/Assign_17"
   input: "^save/Assign_18"
   input: "^save/Assign_19"
+  input: "^save/Assign_2"
   input: "^save/Assign_20"
   input: "^save/Assign_21"
   input: "^save/Assign_22"
@@ -38616,6 +35817,7 @@ node {
   input: "^save/Assign_27"
   input: "^save/Assign_28"
   input: "^save/Assign_29"
+  input: "^save/Assign_3"
   input: "^save/Assign_30"
   input: "^save/Assign_31"
   input: "^save/Assign_32"
@@ -38624,6 +35826,12 @@ node {
   input: "^save/Assign_35"
   input: "^save/Assign_36"
   input: "^save/Assign_37"
+  input: "^save/Assign_4"
+  input: "^save/Assign_5"
+  input: "^save/Assign_6"
+  input: "^save/Assign_7"
+  input: "^save/Assign_8"
+  input: "^save/Assign_9"
 }
 node {
   name: "save/restore_all"
@@ -38631,5 +35839,5 @@ node {
   input: "^save/restore_shard"
 }
 versions {
-  producer: 24
+  producer: 27
 }
