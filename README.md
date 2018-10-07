@@ -1,6 +1,16 @@
 # End-To-End-Automatic-Speech-Recognition
 A simple speech to text converter.
 
+# About
+There are arround 29 options to chose from :
+`yes no up down left right on off stop go zero one two three four five six seven eight nine bed bird cat dog happy house marvin sheila tree wow`
+  
+There are samples of each recording in the sample directoy of the respective option.
+  
+To test the classifier copy any audio sample in the audio directory and run the `prog.py`.
+  
+NOTE : At a time load the audio directory with only one file.
+
 # Important Note
 This has been coded for the ease of linux system's ONLY.
   
