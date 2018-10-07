@@ -82,26 +82,30 @@ def _create_my_experiment(run_config, hparams):
 	return exp
 
 # now we want to predict!
-paths = glob(os.path.join(DATADIR, '*wav'))
-def test_data_generator(data):
-	def generator():
-		for path in data:
-			_, wav = wavfile.read(path)
-			wav = wav.astype(np.float32) / np.iinfo(np.int16).max
-			fname = os.path.basename(path)
-			yield dict(sample=np.string_(fname), wav=wav)
-	return generator
-
-test_input_fn = generator_input_fn(x=test_data_generator(paths), batch_size=hparams.batch_size, shuffle=False, num_epochs=1, queue_capacity= 10 * hparams.batch_size, num_threads=1)	#the predict function being called
-
-model = create_model(config=run_config, hparams=hparams)
-it = model.predict(input_fn=test_input_fn)
-
-# last batch will contain padding, so remove duplicates
 submission = dict()
-for t in tqdm(it):
-	fname, label = t['sample'].decode(), id2name[t['label']]
-	submission[fname] = label
+for paths in glob(os.path.join(DATADIR, '*wav')): #os.listdir(DATADIR):
+	k = []
+	k.append(paths)
+	paths = k
+	def test_data_generator(data):
+		def generator():
+			for path in data:
+				_, wav = wavfile.read(path)
+				wav = wav.astype(np.float32) / np.iinfo(np.int16).max
+				fname = os.path.basename(path)
+				yield dict(sample=np.string_(fname), wav=wav)
+		return generator
+
+	test_input_fn = generator_input_fn(x=test_data_generator(paths), batch_size=hparams.batch_size, shuffle=False, num_epochs=1, queue_capacity= 10 * hparams.batch_size, num_threads=1)	#the predict function being called
+
+	model = create_model(config=run_config, hparams=hparams)
+	it = model.predict(input_fn=test_input_fn)
+
+	# last batch will contain padding, so remove duplicates
+	for t in tqdm(it):
+		fname, label = t['sample'].decode(), id2name[t['label']]
+		submission[fname] = label
 os.system('clear')
+print('Pridictions : ')
 for fname, label in submission.items():
 	print('{},{}\n'.format(fname, label))
