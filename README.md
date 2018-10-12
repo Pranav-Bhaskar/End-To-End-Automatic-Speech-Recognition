@@ -57,7 +57,7 @@ To predict all your recording's use : `python3 prog.py`
 # Installation (FULL)
 To install all the required packages on your system run the following : `bash inst.sh`
 
-# Installation (Indivisual)
+# Installation (Individually)
 It is recomended to remove the keyword sudo from the pip commands if you dont want it to install for all the users.
 
 For pyaudio : `sudo apt-get install python3-pyaudio`
