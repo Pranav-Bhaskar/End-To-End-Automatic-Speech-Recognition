@@ -1,6 +1,8 @@
 DATADIR = './audio' # unzipped train and test data
 OUTDIR = './MaDaR4' # just a random name
 
+print('Importing Files...')
+
 import os
 import re
 from glob import glob
@@ -13,6 +15,9 @@ from functions.bl import baseline
 from tensorflow.contrib import signal
 from tensorflow.contrib.learn.python.learn.learn_io.generator_io import generator_input_fn
 from tqdm import tqdm
+from functions.record import recorder
+
+print('Declaring Globals...')
 
 POSSIBLE_LABELS = 'yes no up down left right on off stop go zero one two three four five six seven eight nine bed bird cat dog happy house marvin sheila tree wow silence unknown'.split()	#list containing all the possible commands
 id2name = {i: name for i, name in enumerate(POSSIBLE_LABELS)}	#dictionary used to represent each command with a unique number
@@ -75,27 +80,28 @@ def create_model(config=None, hparams=None):
 	return tf.estimator.Estimator(model_fn=model_handler, config=config, params=hparams)	#the function which would be called by '_create_my_experiment()'
 
 
-run_config = tf.contrib.learn.RunConfig(model_dir=model_dir)
+print('Rebuilding Network from previous CheckPoint...')
+
+run_config = tf.contrib.learn.RunConfig(model_dir=model_dir)	#Loading the model from the directory ./MaDaR4
 
 def _create_my_experiment(run_config, hparams):
 	exp = tf.contrib.learn.Experiment(estimator=create_model(config=run_config, hparams=hparams), train_input_fn=train_input_fn, eval_input_fn=val_input_fn, train_steps=10000, eval_steps=200, train_steps_per_iteration=1000)	#the main classifier which will be trained and be used for predictions in the end
 	return exp
+	
+def test_data_generator(data):
+	def generator():
+		for path in data:
+			_, wav = wavfile.read(path)
+			wav = wav.astype(np.float32) / np.iinfo(np.int16).max
+			fname = os.path.basename(path)
+			yield dict(sample=np.string_(fname), wav=wav)
+	return generator
 
-# now we want to predict!
-submission = dict()
-for paths in glob(os.path.join(DATADIR, '*wav')): #os.listdir(DATADIR):
-	k = []
-	k.append(paths)
-	paths = k
-	def test_data_generator(data):
-		def generator():
-			for path in data:
-				_, wav = wavfile.read(path)
-				wav = wav.astype(np.float32) / np.iinfo(np.int16).max
-				fname = os.path.basename(path)
-				yield dict(sample=np.string_(fname), wav=wav)
-		return generator
-
+def predictor():
+	# now we want to predict!
+	submission = dict()
+	paths = ['./audio/recording.wav']
+	
 	test_input_fn = generator_input_fn(x=test_data_generator(paths), batch_size=hparams.batch_size, shuffle=False, num_epochs=1, queue_capacity= 10 * hparams.batch_size, num_threads=1)	#the predict function being called
 
 	model = create_model(config=run_config, hparams=hparams)
@@ -105,7 +111,21 @@ for paths in glob(os.path.join(DATADIR, '*wav')): #os.listdir(DATADIR):
 	for t in tqdm(it):
 		fname, label = t['sample'].decode(), id2name[t['label']]
 		submission[fname] = label
-os.system('clear')
-print('Pridictions : ')
-for fname, label in submission.items():
-	print('{},{}\n'.format(fname, label))
+	os.system('clear')
+	for fname, label in submission.items():
+		if label == 'stop':
+			print('Exitting...')
+			os.system('rm -rf ./audio/*')
+			return True
+		print('You said : {}\n'.format(label))
+		return False
+
+print('Ready')
+
+while True:
+	_ = input('Press Enter to continue...')
+	os.system('rm -rf ./audio/*')
+	recorder()
+	if predictor():
+		break
+print('Thank You')

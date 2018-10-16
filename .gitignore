@@ -4,3 +4,5 @@ functions/__pycache__/
 *.py~
 
 MaDaR4/checkpoint~
+
+__pycache__/

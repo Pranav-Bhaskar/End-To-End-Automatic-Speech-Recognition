@@ -9,7 +9,7 @@ import os
 THRESHOLD = 500
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
-RATE = 44100
+RATE = 16000
 
 def is_silent(snd_data):
 	"Returns 'True' if below the 'silent' threshold"
@@ -97,7 +97,6 @@ def record():
 	stream.stop_stream()
 	stream.close()
 	p.terminate()
-
 	r = normalize(r)
 	r = trim(r)
 	return sample_width, r
@@ -114,9 +113,8 @@ def record_to_file(path):
 	wf.writeframes(data)
 	wf.close()
 
-if __name__ == '__main__':
+def recorder():
 	print("please speak a word into the microphone")
 	os.makedirs('./audio/', exist_ok=True)
-	l = os.listdir('./audio/')
-	record_to_file('./audio/'+str(len(l))+'.wav')
-	print("done - result written to ./audio/"+str(len(l))+".wav")
+	record_to_file('./audio/recording.wav')
+	print("Recording Done - Result written to ./audio/recording.wav")
